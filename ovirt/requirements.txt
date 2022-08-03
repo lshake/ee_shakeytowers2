@@ -1,0 +1,8 @@
+netaddr
+dnspython
+jsonpatch
+pywinrm
+requests-ntlm
+requests-kerberos
+requests-credssp
+requests-oauthlib

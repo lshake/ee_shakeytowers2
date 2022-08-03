@@ -1,0 +1,17 @@
+---
+collections:
+  - name: amazon.aws
+  - name: ansible.netcommon
+  - name: ansible.posix
+  - name: ansible.utils
+  - name: ansible.windows
+  - name: ansible.controller
+  - name: chocolatey.chocolatey
+  - name: community.general
+  - name: community.vmware
+  - name: community.windows
+  - name: redhat.satellite
+  - name: freeipa.ansible_freeipa
+  - name: oasis_roles.system
+  - name: azure.azcollection
+  - name: ovirt.ovirt

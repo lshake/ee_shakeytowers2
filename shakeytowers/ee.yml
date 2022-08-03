@@ -1,0 +1,35 @@
+---
+# ansible-builder build --file=ee.yml --verbosity 3 --tag 'quay.shakey.dev/ansible/ee/shakeytowersee2:latest'
+version: 1
+
+build_arg_defaults:
+  # Original : registry.redhat.io/ansible-automation-platform-22/ansible-builder-rhel8
+  EE_BUILDER_IMAGE: 'quay.shakey.dev/ansible/aap22/ansible-builder-rhel8'
+  # Original : registry.redhat.io/ansible-automation-platform/ee-minimal-rhel8:2.13.0-1
+  EE_BASE_IMAGE: 'quay.shakey.dev/ansible/aap22/ee-minimal-rhel8:2.13.0-1'
+  # My CA Root used for Private Automation Hub is not in the builder image, so we ignore TLS certificate validation errors
+  # Todo : Use letsencrypt for PAH.  Note : Improvements being considered to mount local host certs into the builder.
+  ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: --ignore-certs
+ansible_config: 'ansible.cfg'
+
+dependencies:
+  galaxy: ./requirements.yml
+  python: ./requirements.txt
+  system: ./bindep.txt
+
+additional_build_steps:
+  prepend: |
+    RUN curl -v https://gitlab.shakey.dev/shakeytowers/ee_static_configs/-/raw/main/pip.conf -o /etc/pip.conf && \
+        curl -v https://gitlab.shakey.dev/shakeytowers/root-certificates/-/raw/main/ca.crt -o /etc/pki/ca-trust/source/anchors/ST-Root-CA.pem && \
+        curl -v https://gitlab.shakey.dev/shakeytowers/ee_static_configs/-/raw/main/hashicorp_rpm_gpg -o /root/hashicorp_rpm_gpg && \
+        update-ca-trust
+    RUN rm -f /etc/yum.repos.d/ubi.repo && \
+        rpm --import /root/hashicorp_rpm_gpg
+  append: |
+    RUN microdnf install -y terraform vault
+    RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64 -o /usr/local/bin/helm && \
+        chmod 0755 /usr/local/bin/helm && \
+        /usr/local/bin/helm plugin install https://github.com/databus23/helm-diff
+
+# RUN curl -v https://gitlab.shakey.dev/shakeytowers/ee_static_configs/-/raw/main/ubi.repo -o /etc/yum.repos.d/ubi.repo
+# RUN curl -v https://gitlab.shakey.dev/shakeytowers/ee_static_configs/-/raw/main/hashicorp.repo -o /etc/yum.repos.d/hashicorp.repo

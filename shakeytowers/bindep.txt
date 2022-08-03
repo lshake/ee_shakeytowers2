@@ -1,0 +1,20 @@
+# Required for WinRM
+krb5-workstation
+krb5-devel
+# Required for network or dns filters
+iputils
+# Was required once upon a time
+procps-ng
+# Useful for become and localhost in the EE
+sudo
+# Required for synchronise module
+rsync
+# Required for unarchive module
+tar
+# Required for ovirt / rhv
+gcc
+libcurl-devel
+libxml2-devel
+openssl-devel
+python39-devel
+qemu-img

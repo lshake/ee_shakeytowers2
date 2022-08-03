@@ -1,0 +1,45 @@
+# Compiled Python files
+*.pyc
+
+# Ansible retry files
+*.retry
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# Archives
+*.tar.gz
+*.tgz
+*.zip
+
+# Local Vagrant directory
+.vagrant
+
+# Ansible tower_cli_data
+tower_cli_data/*
+
+# # Roles should be pulled from galaxy
+roles/*
+collections/*
+# Except for requirements files
+!roles/requirements*.yml
+!collections/requirements*.yml
+
+# VSCode workspace files
+*.code-workspace
+
+# Exclude the context work dir
+context
+
+# Ansible config contains tokens
+# Todo : Move to environment vars.
+ansible.cfg
